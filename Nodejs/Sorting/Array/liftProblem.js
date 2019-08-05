@@ -22,6 +22,13 @@ Your answer must be within:
     Auxillary space complexity = O(N)
 Please provide your answer below
 */
+
+/*
+Assumptions:
+Since it is given that people must be served in the order they arrive:
+if a person with less weight who arrived late have to wait for his turn even if he/she could have went inside the lift.
+The floor values will be always less than or equal to totalFloors.(no mention of what to do on invalid values)
+*/
 module.exports = function(A, B, M, X, Y) {
     const weightsOfPeople = A;
     const floorsToVisit = B;
@@ -29,29 +36,23 @@ module.exports = function(A, B, M, X, Y) {
     const maxPeople = X;
     const maxPeopleWeight = Y;
     const floorsToHalt = new Set();
-    let peopleOnLift = [];
     let currentWeight = 0;
+    let currentLength=0;
     let result = 0;
-    //Given that people must be served in the order they arrive
-    /* Because of the above mentioned statement, it can be assumed that if a person with less weight 
-    who arrived late have to wait for his turn even if he/she could have went inside the lift.
-    */
+
     for (let index = 0; index < weightsOfPeople.length; index++) {
-        peopleOnLift.push(weightsOfPeople[index]);
         currentWeight+=weightsOfPeople[index];
-        let ifLiftFull = checkIfLiftFull(peopleOnLift, maxPeople, maxPeopleWeight);
+        currentLength++;
+        let ifLiftFull = checkIfLiftFull(currentWeight, currentLength,maxPeople, maxPeopleWeight);
         if (ifLiftFull) {
             //lift will go up
-            peopleOnLift.pop();
-            currentWeight-=weightsOfPeople[index];
             result += floorsToHalt.size + 1;
-            peopleOnLift = [];
-            currentWeight=0;
             floorsToHalt.clear();
-            peopleOnLift.push(weightsOfPeople[index]);
-            currentWeight=weightsOfPeople[index];
+            currentWeight = weightsOfPeople[index];
+            currentLength=1;
             floorsToHalt.add(floorsToVisit[index]);
         } else {
+            //Add more people
             floorsToHalt.add(floorsToVisit[index]);
         }
     }
@@ -59,13 +60,13 @@ module.exports = function(A, B, M, X, Y) {
     return result;
 };
 
-function checkIfLiftFull(currentLift, maxNumber, maxWeight) {
+function checkIfLiftFull(currentWeight, currentLength,maxNumber, maxWeight) {
     let result = false;
-    let currentWeight = currentLift.reduce((x, y) => x + y);
     if (currentWeight > maxWeight) {
         result = true;
+        return result;
     }
-    if (currentLift.length > maxNumber) {
+    if (currentLength > maxNumber) {
         result = true;
     }
     return result;
