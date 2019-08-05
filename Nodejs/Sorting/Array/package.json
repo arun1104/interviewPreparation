@@ -1,0 +1,33 @@
+{
+  "name": "code-challenge",
+  "description": "Engel & Völkers Code Challenge",
+  "version": "1.0.0",
+  "private": true,
+  "author": {
+    "name": "Engel & Völkers",
+    "email": "hotline@engelvoelkers.com",
+    "url": "https://www.engelvoelkers.com/"
+  },
+  "main": "src/challenge.js",
+  "engines": {
+    "node": ">= 10.0.0",
+    "npm": ">= 5.0.0"
+  },
+  "scripts": {
+    "check-coverage": "istanbul check-coverage",
+    "coverage": "istanbul cover _mocha",
+    "lint": "eslint .",
+    "test": "npm run lint && npm run coverage && npm run check-coverage"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "eslint": "^4.0.0",
+    "eslint-config-suddi": "^4.0.0",
+    "istanbul": "1.1.0-alpha.1",
+    "mocha": "^4.0.1"
+  },
+  "eslintConfig": {
+    "extends": "suddi/node"
+  }
+}
